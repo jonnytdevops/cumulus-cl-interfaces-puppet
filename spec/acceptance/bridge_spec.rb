@@ -12,13 +12,14 @@ describe 'bridges' do
 
         # Classic bridge driver over-ride all defaults
         cumulus_bridge { 'br1':
-          ports            => ['swp13-14'],
-          ipv4             =>  ['10.0.0.1/24', '192.168.1.0/16'],
-          ipv6             => ['2001:db8:abcd::/48'],
-          alias_name       => 'classic bridge number 1',
-          mtu              => 9000,
-          stp              => false,
-          mstpctl_treeprio => 4096,
+          ports                   => ['swp13-14'],
+          ipv4                    =>  ['10.0.0.1/24', '192.168.1.0/16'],
+          ipv6                    => ['2001:db8:abcd::/48'],
+          alias_name              => 'classic bridge number 1',
+          mtu                     => 9000,
+          stp                     => false,
+          mstpctl_treeprio        => 4096,
+          mstpctl_portbpdufilter  => ['swp13-14'],
           virtual_ip       => '192.168.100.1',
           virtual_mac      => '11:22:33:44:55:66',
           notify           => Service['networking'],
@@ -63,6 +64,7 @@ describe 'bridges' do
       its(:content) { should match(/bridge-stp no/) }
       its(:content) { should match(/mtu 9000/) }
       its(:content) { should match(/mstpctl-treeprio 4096/) }
+      its(:content) { should match(/mstpctl_portbpdufilter swp13=yes swp14=yes/) }
       its(:content) { should match(%r{address 10.0.0.1/24}) }
       its(:content) { should match(%r{address 192.168.1.0/16}) }
       its(:content) { should match(%r{address 2001:db8:abcd::/48}) }
@@ -81,19 +83,20 @@ describe 'bridges' do
 
         # New bridge driver over-ride all defaults
         cumulus_bridge { 'bridge3':
-          ports            => ['swp17-18'],
-          vlan_aware       => true,
-          vids             => ['1-4094'],
-          pvid             => 1,
-          ipv4             => ['10.0.100.1/24', '192.168.100.0/16'],
-          ipv6             => ['2001:db8:1234::/48'],
-          alias_name       => 'new bridge number 3',
-          mtu              => 9000,
-          stp              => false,
-          mstpctl_treeprio => 4096,
-          virtual_ip       => '192.168.100.2',
-          virtual_mac      => 'aa:bb:cc:dd:ee:ff',
-          notify           => Service['networking'],
+          ports                   => ['swp17-18'],
+          vlan_aware              => true,
+          vids                    => ['1-4094'],
+          pvid                    => 1,
+          ipv4                    => ['10.0.100.1/24', '192.168.100.0/16'],
+          ipv6                    => ['2001:db8:1234::/48'],
+          alias_name              => 'new bridge number 3',
+          mtu                     => 9000,
+          stp                     => false,
+          mstpctl_treeprio        => 4096,
+          mstpctl_portbpdufilter  => ['swp13-14'],
+          virtual_ip              => '192.168.100.2',
+          virtual_mac             => 'aa:bb:cc:dd:ee:ff',
+          notify                  => Service['networking'],
         }
 
         file { '/etc/network/interfaces':
@@ -132,6 +135,7 @@ describe 'bridges' do
       its(:content) { should match(/bridge-stp no/) }
       its(:content) { should match(/mtu 9000/) }
       its(:content) { should match(/mstpctl-treeprio 4096/) }
+      its(:content) { should match(/mstpctl_portbpdufilter swp13=yes swp14=yes/) }
       its(:content) { should match(/bridge-pvid 1/) }
       its(:content) { should match(/bridge-vids 1-4094/) }
       its(:content) { should match(%r{address 10.0.100.1/24}) }

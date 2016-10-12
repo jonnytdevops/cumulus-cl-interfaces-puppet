@@ -210,6 +210,7 @@ The following CLAG-related attributes are also available. If CLAG is enabled, yo
 * `mtu` - The interface Maximum Transmission Unit (MTU).
 * `stp` - Enable spanning tree. Default is true.
 * `mstpctl_treeprio` - Bridge tree root priority. Must be a multiple of 4096.
+* `mstpctl_portbpdufilter` - Enables the BPDU filter functionality for an Array of ports.
 * `vlan_aware` - Use the VLAN-aware bridge driver. Default is false.
 * `virtual_ip` - VRR virtual IP address.
 * `virtual_mac` - VRR virtual MAC address.

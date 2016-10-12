@@ -21,6 +21,7 @@ describe provider_class do
       virtual_ip: '10.1.1.1/24',
       virtual_mac: '00:00:5e:00:00:01',
       mstpctl_treeprio: 4096,
+      mstpctl_portbpdufilter: ['swp13-14'],
       mtu: 9000,
       mcsnoop: 1,
       ports: ['swp1-3', 'bond0']

@@ -18,6 +18,7 @@ describe cl_iface do
       :pvid,
       :location,
       :mstpctl_treeprio,
+      :mstpctl_portbpdufilter,
       :vlan_aware,
       :mcsnoop,
       :ports

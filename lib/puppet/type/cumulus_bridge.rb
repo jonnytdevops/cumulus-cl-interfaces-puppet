@@ -129,6 +129,24 @@ Puppet::Type.newtype(:cumulus_bridge) do
     end
   end
 
+  newparam(:mstpctl_portbpdufilter) do
+    desc 'Enables the BPDU filter functionality for an Array of ports'
+
+    def validate(values)
+      fail ('mstpctl_portbpdufilter must be an array') if !values.is_a?(Array)
+    end
+
+    munge do |values|
+      ifaces = []
+      values.each do |val|
+        indv = @resource.split_globs(val)
+        indv.map! {|ele| "#{ele}=yes"}
+        ifaces << indv
+      end
+      ifaces.flatten.join(' ')
+    end
+  end
+
   validate do
     fail Puppet::Error, 'ports list required' if self[:ports].nil?
 
