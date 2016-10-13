@@ -98,7 +98,11 @@ class Ifupdown2Config
     elsif resource_value == false
       ifupdown_value = 'no'
     elsif resource_value.is_a?(Array)
+      return if resource_value.empty?
       ifupdown_value = resource_value.join(' ')
+    elsif resource_value.is_a?(String)
+      return if resource_value.empty?
+      ifupdown_value = resource_value
     else
       ifupdown_value = resource_value.to_s
     end

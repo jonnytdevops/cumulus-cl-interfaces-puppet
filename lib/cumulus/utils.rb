@@ -21,6 +21,7 @@ module Cumulus
     end
 
     def split_globs(value)
+      return [] if value.nil?
       /swp(?<lower_bound>\d+)-(?<upper_bound>\d+)(?<vid>.\d+)?/ =~ value
       return [value] if upper_bound.nil?
       ifaces = []
