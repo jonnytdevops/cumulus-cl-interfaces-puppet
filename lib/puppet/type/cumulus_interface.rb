@@ -63,6 +63,11 @@ Puppet::Type.newtype(:cumulus_interface) do
     end
   end
 
+  newparam(:autoneg) do
+    desc 'auto negotiation'
+    newvalues(:off, :on)
+  end
+
   newparam(:mtu) do
     desc 'link mtu. Can be 1500 to 9000 KBs'
     munge do |value|
